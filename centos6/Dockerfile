@@ -1,2 +1,3 @@
 FROM centos:6
 RUN yum install -y git vim make gcc-c++ java
+RUN yum install -y gdb
