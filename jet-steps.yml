@@ -1,0 +1,6 @@
+- type: parallel
+  services:
+    - jessie
+    - centos5
+  steps:
+    - command: true
