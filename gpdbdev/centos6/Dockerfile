@@ -35,3 +35,5 @@ RUN pip install \
 	lockfile \
 	paramiko \
 	epydoc
+
+ADD libc.conf /etc/ld.so.conf.d/libc.conf
