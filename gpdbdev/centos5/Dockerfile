@@ -25,7 +25,8 @@ RUN yum install -y \
 	perl-ExtUtils-Embed \
 	libxml2-devel \
 	libxslt-devel \
-	libffi-devel
+	libffi-devel \
+	file
 
 RUN yum install -y gpg
 # https://gcc.gnu.org/mirrors.html
