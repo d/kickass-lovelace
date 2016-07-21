@@ -82,26 +82,27 @@ RUN set -exuo pipefail \
 
 # "download_prerequisites" pulls down a bunch of tarballs and extracts them,
 # but then leaves the tarballs themselves lying around
-RUN buildDeps='flex' GCC_VERSION=6.1.0 \
-	&& set -ex \
-	&& yum install -y $buildDeps \
+RUN GCC_VERSION=6.1.0 \
+	&& set -exu \
 	&& curl -fSL "http://ftpmirror.gnu.org/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.bz2" -o gcc.tar.bz2 \
 	&& curl -fSL "http://ftpmirror.gnu.org/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.bz2.sig" -o gcc.tar.bz2.sig \
 	&& gpg --batch --verify gcc.tar.bz2.sig gcc.tar.bz2 \
 	&& mkdir -p /usr/src/gcc \
 	&& tar -xf gcc.tar.bz2 -C /usr/src/gcc --strip-components=1 \
 	&& rm gcc.tar.bz2* \
-	&& cd /usr/src/gcc \
+	&& pushd /usr/src/gcc \
 	&& ./contrib/download_prerequisites \
 	&& { rm *.tar.* || true; } \
+	&& popd \
 	&& dir="$(mktemp -d)" \
-	&& cd "$dir" \
+	&& pushd "$dir" \
 	&& /usr/src/gcc/configure \
 		--disable-multilib \
 		--enable-languages=c,c++ \
-	&& make -j16 \
+	&& make -j"$(nproc)" \
 	&& make install-strip \
-	&& cd .. \
+	&& popd \
+	&& rm -r /usr/src/gcc \
 	&& rm -rf "$dir"
 
 # gpg: key 18ADD4FF: public key "Benjamin Peterson <benjamin@python.org>" imported
@@ -121,7 +122,7 @@ RUN set -ex \
 	&& ./configure \
 		--enable-shared \
 		--enable-unicode=ucs4 \
-	&& make -j16 \
+	&& make -j"$(nproc)" \
 	&& make install \
 	&& ldconfig \
 	&& curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | python2 \
