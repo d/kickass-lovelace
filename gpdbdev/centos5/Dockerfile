@@ -2,7 +2,7 @@ FROM centos:5
 ADD libc.conf /etc/ld.so.conf.d/libc.conf
 RUN yum upgrade -qy \
 	&& yum install -qy epel-release
-RUN yum install -y git vim-enhanced nano make gcc-c++ gdb wget libidn.x86_64 patch
+RUN yum install -qy git vim-enhanced nano make gcc-c++ flex gdb wget libidn.x86_64 patch
 RUN wget --no-check-certificate --no-verbose https://cmake.org/files/v3.6/cmake-3.6.0-Linux-x86_64.sh --output-document /dev/shm/cmake-installer.sh && \
     sh /dev/shm/cmake-installer.sh --prefix=/usr/local --exclude-subdir
 RUN yum install -qy \
@@ -43,6 +43,42 @@ RUN set -ex \
 	33C235A34C46AA3FFB293709A328C3A2C3C45C06; do \
 		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
 	done
+
+# Signing key for binutils and coreutils
+RUN gpg --keyserver keys.gnupg.net --recv-keys 4AE55E93 306037D9
+
+RUN set -exuo pipefail \
+	&& VERSION=2.26 \
+	&& curl -fS "http://ftp.gnu.org/gnu/binutils/binutils-${VERSION}.tar.gz" -o binutils.tar.gz \
+	&& curl -fS "http://ftp.gnu.org/gnu/binutils/binutils-${VERSION}.tar.gz.sig" -o binutils.tar.gz.sig \
+	&& gpg --batch --verify binutils.tar.gz.sig binutils.tar.gz \
+	&& mkdir -p /usr/src/binutils \
+	&& tar xf binutils.tar.gz -C /usr/src/binutils --strip-components=1 \
+	&& BUILD="$(mktemp -d)" \
+	&& pushd "${BUILD}" \
+	&& /usr/src/binutils/configure \
+	&& make -j16 \
+	&& make install \
+	&& rm -r /usr/src/binutils \
+	&& popd \
+	&& rm binutils.tar.gz{,.sig} \
+	&& rm -r "${BUILD}"
+
+RUN set -exuo pipefail \
+	&& VERSION=8.25 \
+	&& curl -fS "http://ftp.gnu.org/gnu/coreutils/coreutils-${VERSION}.tar.xz" -o coreutils.tar.xz \
+	&& curl -fS "http://ftp.gnu.org/gnu/coreutils/coreutils-${VERSION}.tar.xz.sig" -o coreutils.tar.xz.sig \
+	&& gpg --batch --verify coreutils.tar.xz.sig coreutils.tar.xz \
+	&& mkdir -p /usr/src/coreutils \
+	&& xzcat coreutils.tar.xz | tar x -C /usr/src/coreutils --strip-components=1 \
+	&& BUILD="$(mktemp -d)" \
+	&& pushd "${BUILD}" \
+	&& env FORCE_UNSAFE_CONFIGURE=1 /usr/src/coreutils/configure \
+	&& make \
+	&& make install \
+	&& rm -r /usr/src/coreutils \
+	&& popd \
+	&& rm -r "${BUILD}"
 
 # "download_prerequisites" pulls down a bunch of tarballs and extracts them,
 # but then leaves the tarballs themselves lying around
