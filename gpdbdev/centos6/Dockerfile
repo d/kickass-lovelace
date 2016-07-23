@@ -49,7 +49,7 @@ RUN set -ex \
 	&& ./configure \
 		--enable-shared \
 		--enable-unicode=ucs4 \
-	&& make -j16 \
+	&& make -j$(nproc) \
 	&& make install \
 	&& ldconfig \
 	&& curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | python2 \
