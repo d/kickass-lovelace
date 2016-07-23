@@ -2,9 +2,18 @@ FROM centos:5
 ADD libc.conf /etc/ld.so.conf.d/libc.conf
 RUN yum upgrade -qy \
 	&& yum install -qy epel-release
-RUN yum install -qy git vim-enhanced nano make gcc-c++ flex gdb wget libidn.x86_64 patch
-RUN wget --no-check-certificate --no-verbose https://cmake.org/files/v3.6/cmake-3.6.0-Linux-x86_64.sh --output-document /dev/shm/cmake-installer.sh && \
-    sh /dev/shm/cmake-installer.sh --prefix=/usr/local --exclude-subdir
+RUN yum install -qy git vim-enhanced nano make gcc-c++ flex gdb wget libidn.x86_64 patch gpg
+RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
+RUN VERSION=3.6.1 \
+	&& set -euxo pipefail \
+	&& wget --no-verbose --no-check-certificate --directory-prefix /dev/shm http://cmake.org/files/v${VERSION%.*}/cmake-${VERSION}-{SHA-256.txt{,.asc},Linux-x86_64.sh} \
+	&& gpg --verify /dev/shm/cmake-${VERSION}-SHA-256.txt{.asc,} \
+	&& ( \
+		cd /dev/shm \
+		&& fgrep cmake-${VERSION}-Linux-x86_64.sh cmake-${VERSION}-SHA-256.txt | sha256sum --check - \
+	) \
+	&& sh /dev/shm/cmake-${VERSION}-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
+
 RUN yum install -qy \
 	sudo \
 	passwd \
@@ -29,8 +38,7 @@ RUN yum install -qy \
 	libxslt-devel \
 	libffi-devel \
 	file \
-	xz \
-	gpg
+	xz
 
 # https://gcc.gnu.org/mirrors.html
 RUN set -ex \
