@@ -2,7 +2,7 @@ FROM centos:6
 ADD libc.conf /etc/ld.so.conf.d/libc.conf
 RUN yum upgrade -y \
 	&& yum install -y epel-release
-RUN yum install -q -y git vim-enhanced nano make gcc-c++ gdb wget libidn.x86_64 patch gpg
+RUN yum install -q -y git vim-enhanced nano make gcc-c++ flex bison gdb wget libidn.x86_64 patch gpg
 
 RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
@@ -15,7 +15,7 @@ RUN VERSION=3.6.1 \
 	) \
 	&& sh /dev/shm/cmake-${VERSION}-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
 
-RUN yum install -y \
+RUN yum install -q -y \
 	sudo \
 	passwd \
 	openssh-server \
@@ -39,8 +39,6 @@ RUN yum install -y \
 	libxslt-devel \
 	libffi-devel \
 	file
-
-RUN yum --exclude=systemtap groupinstall -y "Development tools"
 
 # gpg: key 18ADD4FF: public key "Benjamin Peterson <benjamin@python.org>" imported
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF
