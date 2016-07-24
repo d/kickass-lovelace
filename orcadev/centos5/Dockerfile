@@ -7,9 +7,9 @@ RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
 	&& set -euxo pipefail \
 	&& wget --no-verbose --no-check-certificate --directory-prefix /dev/shm http://cmake.org/files/v${VERSION%.*}/cmake-${VERSION}-{SHA-256.txt{,.asc},Linux-x86_64.sh} \
-	&& gpg --verify /dev/shm/cmake-${VERSION}-SHA-256.txt{.asc,} \
 	&& ( \
 		cd /dev/shm \
+		&& gpg --verify cmake-${VERSION}-SHA-256.txt{.asc,} \
 		&& fgrep cmake-${VERSION}-Linux-x86_64.sh cmake-${VERSION}-SHA-256.txt | sha256sum --check - \
 	) \
 	&& sh /dev/shm/cmake-${VERSION}-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
