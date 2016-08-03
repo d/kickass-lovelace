@@ -2,7 +2,17 @@ FROM centos:5
 ADD libc.conf /etc/ld.so.conf.d/libc.conf
 RUN yum upgrade -q -y \
 	&& yum install -q -y epel-release
-RUN yum install -q -y git vim-enhanced nano make gcc-c++ gdb wget libidn.x86_64 patch gpg
+RUN yum install -q -y \
+	git \
+	vim-enhanced \
+	nano \
+	make \
+	gcc-c++ \
+	gdb \
+	wget \
+	libidn.x86_64 \
+	patch \
+	gpg
 
 RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
