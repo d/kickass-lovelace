@@ -91,7 +91,7 @@ RUN set -exuo pipefail \
 # "download_prerequisites" pulls down a bunch of tarballs and extracts them,
 # but then leaves the tarballs themselves lying around
 RUN GCC_VERSION=6.1.0 \
-	&& set -exu \
+	&& set -exuo pipefail \
 	&& curl -fSL "http://ftpmirror.gnu.org/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.bz2" -o gcc.tar.bz2 \
 	&& curl -fSL "http://ftpmirror.gnu.org/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.bz2.sig" -o gcc.tar.bz2.sig \
 	&& gpg --batch --verify gcc.tar.bz2.sig gcc.tar.bz2 \

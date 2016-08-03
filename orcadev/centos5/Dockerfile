@@ -14,7 +14,9 @@ RUN yum install -q -y \
 	patch \
 	gpg \
 	zlib-devel \
-	openssl-devel
+	openssl-devel \
+	bzip2 \
+	xz
 
 RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
