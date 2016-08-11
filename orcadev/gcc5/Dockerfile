@@ -108,6 +108,7 @@ RUN set -exuo pipefail \
 	&& make install \
 	&& rm -r /usr/src/coreutils \
 	&& popd \
+	&& rm /coreutils.tar.xz{,.sig} \
 	&& rm -r "${BUILD}"
 
 # "download_prerequisites" pulls down a bunch of tarballs and extracts them,
