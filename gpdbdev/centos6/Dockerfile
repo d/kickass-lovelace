@@ -1,7 +1,7 @@
 FROM centos:6
 RUN yum upgrade -y \
 	&& yum install -y epel-release
-RUN yum install -q -y git vim-enhanced nano make gcc-c++ flex bison gdb wget libidn.x86_64 patch gpg
+RUN yum install -q -y git vim-enhanced nano make gcc-c++ flex bison gdb wget libidn.x86_64 patch gpg ccache
 
 RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
