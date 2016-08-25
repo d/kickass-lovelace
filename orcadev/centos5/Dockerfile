@@ -17,7 +17,8 @@ RUN yum install -q -y \
 	openssl-devel \
 	bzip2 \
 	xz \
-	ccache
+	ccache \
+	unzip
 
 RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
@@ -61,3 +62,6 @@ RUN set -ex \
 		    \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
 		\) -exec rm -rf '{}' + \
 	&& rm -rf /usr/src/python ~/.cache
+
+RUN wget https://github.com/ninja-build/ninja/releases/download/v1.7.1/ninja-linux.zip --output-document /tmp/ninja-linux.zip \
+	&& unzip /tmp/ninja-linux.zip -d /usr/local/bin

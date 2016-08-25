@@ -1,7 +1,21 @@
 FROM centos:6
 RUN yum upgrade -y \
 	&& yum install -y epel-release
-RUN yum install -q -y git vim-enhanced nano make gcc-c++ flex bison gdb wget libidn.x86_64 patch gpg ccache
+RUN yum install -q -y \
+	git \
+	vim-enhanced \
+	nano \
+	make \
+	gcc-c++ \
+	flex \
+	bison \
+	gdb \
+	wget \
+	libidn.x86_64 \
+	patch \
+	gpg \
+	ccache \
+	unzip
 
 RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
@@ -52,3 +66,5 @@ RUN pip install \
 	paramiko \
 	epydoc
 
+RUN wget https://github.com/ninja-build/ninja/releases/download/v1.7.1/ninja-linux.zip --output-document /tmp/ninja-linux.zip \
+	&& unzip /tmp/ninja-linux.zip -d /usr/local/bin
