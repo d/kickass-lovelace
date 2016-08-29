@@ -20,7 +20,7 @@ RUN yum install -q -y \
 	ccache \
 	unzip
 
-RUN gpg --keyserver keys.gnupg.net --recv-keys 7BFB4EDA
+RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
 	&& set -euxo pipefail \
 	&& INSTALLER=cmake-${VERSION}-Linux-x86_64.sh \
