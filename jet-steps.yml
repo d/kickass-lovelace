@@ -1,0 +1,3 @@
+- service: centos5
+  command: true
+  encrypted_dockercfg_path: dockercfg.encrypted

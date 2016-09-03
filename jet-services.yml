@@ -1,0 +1,9 @@
+jessie:
+  build: jessie
+centos5:
+  cached: true
+  build:
+    image: yolo/orcadev
+    image_tag: '{{.ServiceName}}'
+    path: centos5
+    dockerfile_path: Dockerfile
