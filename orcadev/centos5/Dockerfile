@@ -18,7 +18,9 @@ RUN yum install -q -y \
 	bzip2 \
 	xz \
 	ccache \
-	unzip
+	unzip \
+	p7zip \
+	pigz
 
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 7BFB4EDA
 RUN VERSION=3.6.1 \
