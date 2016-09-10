@@ -38,7 +38,8 @@ _main() {
 
 copy_output() {
 	mkdir -p /output
-	tar cf /output/binutils.tar.gz --use-compress-program pigz -C /opt/binutils .
+	tar cf /output/binutils.tar -C /opt/binutils .
+	xz --best /output/binutils.tar
 }
 
 _main "$@"

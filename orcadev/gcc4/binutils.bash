@@ -7,10 +7,23 @@ _main() {
 	# use global variable `container_id` because signal handlers
 	container_id=$(create_container)
 	trap 'cleanup' EXIT
-
 	docker start "${container_id}"
-	docker wait "${container_id}"
-	time docker cp "${container_id}":/output/binutils.tar.gz .
+
+	trap 'print_log' ERR
+	time wait_for_build
+	trap - ERR
+
+	time docker cp "${container_id}":/output/binutils.tar.xz .
+}
+
+wait_for_build() {
+	local -i exit_status
+	exit_status=$(docker wait "${container_id}")
+	return "${exit_status}"
+}
+
+print_log() {
+	docker logs "${container_id}"
 }
 
 cleanup() {
@@ -24,7 +37,7 @@ create_container() {
 		--env CCACHE_DIR=/ccache \
 		--env CCACHE_UMASK=0000 \
 		yolo/orcadev:centos5 \
-		/kickass-lovelace/orcadev/gcc5/build-binutils.bash
+		/kickass-lovelace/orcadev/gcc4/build-binutils.bash
 }
 
 _main "$@"

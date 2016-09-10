@@ -1,3 +1,4 @@
 *
-!binutils.tar*
-!coreutils.tar*
+!binutils.tar.xz
+!coreutils.tar.xz
+!gcc.tar.xz

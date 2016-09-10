@@ -38,7 +38,8 @@ _main() {
 
 copy_output() {
 	mkdir -p /output
-	tar cf /output/coreutils.tar.gz --use-compress-program pigz -C /opt/coreutils .
+	tar cf /output/coreutils.tar -C /opt/coreutils .
+	xz --best /output/coreutils.tar
 }
 
 _main "$@"

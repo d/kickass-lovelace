@@ -14,7 +14,7 @@ build_gcc() {
 		--prefix=/opt/gcc \
 		--disable-multilib \
 		--enable-languages=c,c++
-	make -j4
+	make -j"$(nproc)"
 	env CC='ccache cc' CXX='ccache c++' make install-strip
 	rm -r /usr/src/gcc
 	rm /gcc.tar.bz2{,.sig}
@@ -59,7 +59,8 @@ _main() {
 
 copy_output() {
 	mkdir -p /output
-	tar cf /output/gcc.tar.gz --use-compress-program pigz -C /opt/gcc .
+	tar cf /output/gcc.tar -C /opt/gcc .
+	xz --best /output/gcc.tar
 }
 
 _main "$@"

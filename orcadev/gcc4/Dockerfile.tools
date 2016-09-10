@@ -1,6 +1,4 @@
 FROM yolo/orcadev:centos5
 
-RUN yum erase -q -y gcc
 ADD binutils.tar.xz /usr
 ADD coreutils.tar.xz /usr
-ADD gcc.tar.xz /usr

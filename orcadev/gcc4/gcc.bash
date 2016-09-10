@@ -13,8 +13,22 @@ _main() {
 	trap 'cleanup' EXIT
 
 	docker start "${container_id}"
-	docker attach "${container_id}"
-	time docker cp "${container_id}":/output/gcc.tar.gz .
+
+	trap 'print_log' ERR
+	time wait_for_build
+	trap - ERR
+
+	time docker cp "${container_id}":/output/gcc.tar.xz .
+}
+
+wait_for_build() {
+	local -i exit_status
+	exit_status=$(docker wait "${container_id}")
+	return "${exit_status}"
+}
+
+print_log() {
+	docker logs "${container_id}"
 }
 
 set_ccache_size() {
@@ -27,7 +41,7 @@ set_ccache_size() {
 }
 
 build_image() {
-	docker build --quiet .
+	docker build --quiet --file Dockerfile.tools .
 }
 
 cleanup() {
@@ -41,7 +55,7 @@ create_container() {
 		--env CCACHE_DIR=/ccache \
 		--env CCACHE_UMASK=0000 \
 		"${image_id}" \
-		/kickass-lovelace/orcadev/gcc5/build-gcc.bash
+		/kickass-lovelace/orcadev/gcc4/build-gcc.bash
 }
 
 _main "$@"
