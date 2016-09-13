@@ -3,6 +3,7 @@ ADD libc.conf /etc/ld.so.conf.d/libc.conf
 RUN yum upgrade -q -y \
 	&& yum install -q -y epel-release
 RUN yum install -q -y \
+	glibc-static \
 	git \
 	vim-enhanced \
 	nano \
