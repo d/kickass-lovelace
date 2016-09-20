@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e -u -o pipefail
+
+_main() {
+	printf '[{"version": "3.6.1"}]\n'
+}
+
+_main "$@"
