@@ -67,4 +67,5 @@ RUN set -ex \
 	&& rm -rf /usr/src/python ~/.cache
 
 RUN wget https://github.com/ninja-build/ninja/releases/download/v1.7.1/ninja-linux.zip --output-document /tmp/ninja-linux.zip \
-	&& unzip /tmp/ninja-linux.zip -d /usr/local/bin
+	&& unzip /tmp/ninja-linux.zip -d /usr/local/bin \
+	&& rm /tmp/ninja-linux.zip
