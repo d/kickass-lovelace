@@ -52,7 +52,6 @@ RUN set -ex \
 	&& ./configure \
 		--enable-unicode=ucs4 \
 	&& make -j8 install \
-	&& ldconfig \
 	&& curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | python2 \
 	&& pip install --no-cache-dir --upgrade pip \
 	&& find /usr/local -depth \
