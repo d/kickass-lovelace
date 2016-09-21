@@ -17,7 +17,6 @@ RUN yum install -q -y \
 	openssl-devel \
 	bzip2 \
 	xz \
-	ccache \
 	unzip \
 	p7zip \
 	pigz
@@ -63,6 +62,18 @@ RUN set -ex \
 		    \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
 		\) -exec rm -rf '{}' + \
 	&& rm -rf /usr/src/python ~/.cache
+
+RUN set -exuo pipefail \
+	&& VERSION=3.3.1 \
+	&& curl -fSL "https://www.samba.org/ftp/ccache/ccache-${VERSION}.tar.bz2" -o /tmp/ccache.tar.bz2 \
+	&& mkdir -p /usr/src/ccache \
+	&& tar xf /tmp/ccache.tar.bz2 --strip-components=1 -C /usr/src/ccache \
+	&& mkdir -p /build/ccache \
+	&& cd /build/ccache \
+	&& /usr/src/ccache/configure \
+	&& make -j8 install \
+	&& cd / \
+	&& rm -r /build/ccache /usr/src/ccache /tmp/ccache.tar.bz2
 
 RUN wget https://github.com/ninja-build/ninja/releases/download/v1.7.1/ninja-linux.zip --output-document /tmp/ninja-linux.zip \
 	&& unzip /tmp/ninja-linux.zip -d /usr/local/bin \
