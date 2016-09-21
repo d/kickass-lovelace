@@ -1,5 +1,4 @@
 FROM centos:5
-ADD libc.conf /etc/ld.so.conf.d/libc.conf
 RUN yum upgrade -q -y \
 	&& yum install -q -y epel-release
 RUN yum install -q -y \
@@ -52,7 +51,6 @@ RUN set -ex \
 	\
 	&& cd /usr/src/python \
 	&& ./configure \
-		--enable-shared \
 		--enable-unicode=ucs4 \
 	&& make -j8 install \
 	&& ldconfig \
