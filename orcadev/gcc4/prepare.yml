@@ -1,0 +1,8 @@
+platform: linux
+image: docker://yolo/orcadev#centos5
+outputs:
+  - name: prepared
+inputs:
+  - name: src
+run:
+  path: src/orcadev/gcc4/prepare.bash
