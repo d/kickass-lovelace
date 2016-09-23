@@ -9,6 +9,8 @@ _main() {
 
 	it_has_python27
 
+	it_has_ninja_17
+
 	it_has_executables
 }
 
@@ -19,6 +21,10 @@ it_has_gcc4() {
 
 it_has_modern_cmake() {
 	cmake --version | fgrep --quiet 3.6.1
+}
+
+it_has_ninja_17() {
+	[ "$(ninja --version)" = "1.7.1" ]
 }
 
 it_has_python27() {
