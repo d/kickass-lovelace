@@ -39,17 +39,19 @@ it_has_python27() {
 
 it_has_executables() {
 	local EXECUTABLES=(
-		gpg
 		vim
 		make
 		patch
 		bzip2
 		xz
 		unzip
-		p7zip
+		7za
 		pigz
 		wget
 	)
+	for executable in "${EXECUTABLES[@]}"; do
+		type -p "${executable}"
+	done
 }
 
 _main "$@"
