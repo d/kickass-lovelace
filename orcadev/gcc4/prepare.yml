@@ -1,8 +1,13 @@
 platform: linux
-image: docker://yolo/orcadev#centos5
+image: docker:///yolo/orcadev#centos5
 outputs:
   - name: prepared
 inputs:
   - name: src
+  - name: gcc4
+  - name: cmake
+  - name: python
+  - name: ccache
+  - name: ninja
 run:
   path: src/orcadev/gcc4/prepare.bash

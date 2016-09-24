@@ -9,7 +9,8 @@ _main() {
 		python \
 		gcc4 \
 		ninja \
-		prepared 
+		ccache \
+		prepared
 }
 
 _main "$@"

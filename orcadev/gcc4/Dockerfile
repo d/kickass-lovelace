@@ -21,5 +21,5 @@ RUN yum install -q -y \
 COPY cmake /usr/local/
 COPY python /usr/local
 COPY ccache /usr/local
-COPY gcc /usr/local
+COPY gcc4 /usr/local
 RUN unzip ninja/ninja-linux.zip -d /usr/local/bin
