@@ -2,7 +2,6 @@ FROM centos:5
 RUN yum upgrade -q -y \
 	&& yum install -q -y epel-release
 RUN yum install -q -y \
-	glibc-static \
 	git \
 	vim-enhanced \
 	nano \
