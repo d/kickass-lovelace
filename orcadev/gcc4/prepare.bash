@@ -3,14 +3,15 @@
 set -e -u -o pipefail
 
 _main() {
-	rsync -a \
-		src/orcadev/gcc4/ \
-		cmake \
-		python \
-		gcc4 \
-		ninja \
-		ccache \
-		prepared
+	local DIRECTORIES=(
+		src/orcadev/gcc4/
+		cmake
+		python
+		gcc4
+		ccache
+	)
+	unzip ninja/ninja-linux.zip -d prepared
+	rsync -a "${DIRECTORIES[@]}" prepared
 }
 
 _main "$@"

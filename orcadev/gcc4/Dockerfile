@@ -18,8 +18,5 @@ RUN yum install -q -y \
 	p7zip \
 	pigz
 
-COPY cmake /usr/local/
-COPY python /usr/local
-COPY ccache /usr/local
-COPY gcc4 /usr/local
-RUN unzip ninja/ninja-linux.zip -d /usr/local/bin
+COPY ninja /usr/local/bin/
+COPY cmake python ccache gcc4 /usr/local/
