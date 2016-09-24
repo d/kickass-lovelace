@@ -21,6 +21,17 @@ it_has_gcc4() {
 	g++ --version | fgrep --quiet 4.9.4
 }
 
+it_has_libc_objects() {
+	(
+	set -e
+	pushd "$(mktemp -d -t simple_compilation.XXX)"
+	cat > hello.c <<HELLO
+int main() { return 0; }
+HELLO
+	gcc -o hello hello.c
+	)
+}
+
 it_has_modern_cmake() {
 	cmake --version | fgrep --quiet 3.6.1
 }
