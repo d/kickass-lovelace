@@ -2,6 +2,9 @@
 
 set -e -u -o pipefail
 
+exec 11>&1
+exec 1>&2
+
 _main() {
 	local destination
 	destination=$1
@@ -14,7 +17,7 @@ _main() {
 	cd /build/ccache
 	/usr/src/ccache/configure --prefix "${destination}"
 	make -j16 install
-	cat <<-METADATA
+	cat >&11 <<-METADATA
 	{ "version": { "version": "${VERSION}" } }
 	METADATA
 }
