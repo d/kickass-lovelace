@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e -u -o pipefail
+
+_main() {
+	cat <<-VERSION
+	[{"version": "3.3.1"}]
+	VERSION
+}
+
+_main "$@"

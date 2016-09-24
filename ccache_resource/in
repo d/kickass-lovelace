@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e -u -o pipefail
+
+_main() {
+	local destination
+	destination=$1
+
+	local VERSION=3.3.1
+	curl -fSL "https://www.samba.org/ftp/ccache/ccache-${VERSION}.tar.bz2" -o /tmp/ccache.tar.bz2
+	mkdir -p /usr/src/ccache
+	tar xf /tmp/ccache.tar.bz2 --strip-components=1 -C /usr/src/ccache
+	mkdir -p /build/ccache
+	cd /build/ccache
+	/usr/src/ccache/configure --prefix "${destination}"
+	make -j16 install
+	cat <<-METADATA
+	{ "version": { "version": "${VERSION}" } }
+	METADATA
+}
+
+_main "$@"
