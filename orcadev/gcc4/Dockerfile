@@ -20,3 +20,4 @@ RUN yum install -q -y \
 
 COPY ninja /usr/local/bin/
 COPY cmake python ccache gcc4 /usr/local/
+RUN ln -sv gcc /usr/local/bin/cc
