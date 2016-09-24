@@ -20,7 +20,7 @@ _main() {
 		gpg --verify ${CHECKSUM}{.asc,}
 		fgrep ${INSTALLER} ${CHECKSUM} | sha256sum --check -
 	)
-	sh ./${INSTALLER} --prefix=${destination} --exclude-subdir
+	sh ./${INSTALLER} --prefix="${destination}" --exclude-subdir
 
 	cat >&3 <<-METADATA
 	{

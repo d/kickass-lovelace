@@ -23,8 +23,8 @@ _main() {
 	./configure --enable-unicode=ucs4 --prefix="${destination}"
 	make -j8 install
 
-	curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | ${destination}/bin/python2
-	${destination}/bin/pip install --no-cache-dir --upgrade pip
+	curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | "${destination}"/bin/python2
+	"${destination}"/bin/pip install --no-cache-dir --upgrade pip
 	find /usr/local -depth \
 		\( \
 		    \( -type d -a -name test -o -name tests \) \
