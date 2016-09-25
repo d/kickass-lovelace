@@ -49,9 +49,3 @@ RUN set -ex \
 COPY ninja /usr/local/bin/
 COPY cmake ccache gcc4 /usr/local/
 RUN ln -sv gcc /usr/local/bin/cc
-
-RUN pip install \
-	psutil \
-	lockfile \
-	paramiko \
-	epydoc
