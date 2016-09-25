@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e -u -o pipefail
+set -x
 
 _main() {
 	it_has_gcc4

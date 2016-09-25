@@ -14,6 +14,7 @@ RUN yum install -q -y \
 	gdb \
 	wget \
 	patch \
+	xz \
 	unzip \
 	p7zip \
 	pigz
