@@ -24,9 +24,10 @@ it_has_libc_objects() {
 	set -e
 	pushd "$(mktemp -d -t simple_compilation.XXX)"
 	cat > hello.c <<HELLO
+#include <string.h>
 int main() { return 0; }
 HELLO
-	gcc -o hello hello.c
+	gcc -D_GNU_SOURCE -o hello hello.c
 	)
 }
 
