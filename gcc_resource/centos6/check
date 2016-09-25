@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e -u -o pipefail
+
+_main() {
+	echo '[{"version": "4.9.4"}]'
+}
+
+_main "$@"
