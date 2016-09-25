@@ -4,7 +4,7 @@ set -e -u -o pipefail
 
 _main() {
 	local DIRECTORIES=(
-		src/orcadev/gcc4/
+		src/gpdbdev/gcc4/
 		cmake
 		gcc4
 		ccache
