@@ -1,0 +1,16 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: yolo/gpdbdev
+    tag: centos6
+outputs:
+  - name: prepared
+inputs:
+  - name: src
+  - name: gcc4
+  - name: cmake
+  - name: ccache
+  - name: ninja
+run:
+  path: src/gpdbdev/gcc4/prepare.bash

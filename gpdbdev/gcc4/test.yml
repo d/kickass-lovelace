@@ -1,0 +1,5 @@
+platform: linux
+inputs:
+  - name: src
+run:
+  path: src/gpdbdev/gcc4/test.bash
