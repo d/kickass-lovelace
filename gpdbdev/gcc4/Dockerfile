@@ -46,13 +46,12 @@ RUN set -ex \
 	&& curl -fSL 'https://bootstrap.pypa.io/get-pip.py' | python2 \
 	&& pip install --no-cache-dir --upgrade pip
 
+COPY ninja /usr/local/bin/
+COPY cmake ccache gcc4 /usr/local/
+RUN ln -sv gcc /usr/local/bin/cc
+
 RUN pip install \
 	psutil \
 	lockfile \
 	paramiko \
 	epydoc
-
-COPY ninja /usr/local/bin/
-COPY cmake ccache gcc4 /usr/local/
-RUN ln -sv gcc /usr/local/bin/cc
-
