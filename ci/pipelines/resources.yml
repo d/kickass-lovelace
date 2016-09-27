@@ -36,6 +36,24 @@ resources:
         - ccache_resource
       branch: develop
 
+  - name: gcc_source_resource
+    type: docker-image
+    source:
+      repository: yolo/gcc_source_resource
+      <<: *dockerhub_credentials
+
+  - name: gcc_source_resource_src
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      paths:
+        - gcc_source_resource
+      branch: develop
+
+  - name: alpine
+    type: docker-image
+    source:
+      repository: alpine
 
 jobs:
   - name: ccache_resource
@@ -68,3 +86,17 @@ jobs:
           load_base: centos5
           build: src/cmake_resource
 
+  - name: gcc_source_resource
+    plan:
+      - aggregate:
+        - get: src
+          resource: gcc_source_resource_src
+          trigger: true
+        - get: alpine
+          params:
+            save: true
+      - put: gcc_source_resource
+        params:
+          cache: true
+          load_base: alpine
+          build: src/gcc_source_resource
