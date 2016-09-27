@@ -1,9 +1,12 @@
 #!/bin/bash
 
 set -e -u -o pipefail
+set -x
 
 _main() {
 	it_has_gcc4
+
+	it_has_libc_objects
 
 	it_has_modern_cmake
 

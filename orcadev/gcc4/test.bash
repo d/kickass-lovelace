@@ -6,6 +6,8 @@ set -x
 _main() {
 	it_has_gcc4
 
+	it_has_libc_objects
+
 	it_has_modern_cmake
 
 	it_has_modern_ccache
@@ -27,9 +29,10 @@ it_has_libc_objects() {
 	set -e
 	pushd "$(mktemp -d -t simple_compilation.XXX)"
 	cat > hello.c <<HELLO
+#include <string.h>
 int main() { return 0; }
 HELLO
-	gcc -o hello hello.c
+	gcc -D_GNU_SOURCE -o hello hello.c
 	)
 }
 
