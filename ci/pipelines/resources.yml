@@ -1,0 +1,70 @@
+resources:
+  - name: centos5
+    type: docker-image
+    source:
+      repository: centos
+      tag: "5"
+
+  - name: cmake_resource
+    type: docker-image
+    __ignored: &dockerhub_credentials
+      username: {{docker_hub_username}}
+      password: {{docker_hub_password}}
+    source:
+      repository: yolo/cmake_resource
+      <<: *dockerhub_credentials
+
+  - name: cmake_resource_src
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      paths:
+        - cmake_resource
+      branch: develop
+
+  - name: ccache_resource
+    type: docker-image
+    source:
+      repository: yolo/ccache_resource
+      <<: *dockerhub_credentials
+
+  - name: ccache_resource_src
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      paths:
+        - ccache_resource
+      branch: develop
+
+
+jobs:
+  - name: ccache_resource
+    plan:
+      - aggregate:
+        - get: centos5
+          params:
+            save: true
+        - get: src
+          resource: ccache_resource_src
+          trigger: true
+      - put: ccache_resource
+        params:
+          cache: true
+          load_base: centos5
+          build: src/ccache_resource
+
+  - name: cmake_resource
+    plan:
+      - aggregate:
+        - get: centos5
+          params:
+            save: true
+        - get: src
+          resource: cmake_resource_src
+          trigger: true
+      - put: cmake_resource
+        params:
+          cache: true
+          load_base: centos5
+          build: src/cmake_resource
+

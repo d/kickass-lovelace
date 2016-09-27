@@ -1,0 +1,75 @@
+resources:
+  - name: orcadev_src
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      paths:
+        - orcadev/centos5
+      branch: develop
+
+  - name: orcadev
+    type: docker-image
+    __ignored: &dockerhub_credentials
+      username: {{docker_hub_username}}
+      password: {{docker_hub_password}}
+    source:
+      repository: yolo/orcadev
+      tag: centos5
+      <<: *dockerhub_credentials
+
+  - name: gpdbdev_src
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      paths:
+        - gpdbdev/centos6
+      branch: develop
+
+  - name: gpdbdev
+    type: docker-image
+    source:
+      repository: yolo/gpdbdev
+      tag: centos6
+      <<: *dockerhub_credentials
+
+  - name: centos6
+    type: docker-image
+    source:
+      repository: centos
+      tag: "6"
+
+  - name: centos5
+    type: docker-image
+    source:
+      repository: centos
+      tag: "5"
+
+jobs:
+  - name: orcadev
+    plan:
+      - aggregate:
+        - get: centos5
+          params:
+            save: true
+        - get: src
+          resource: orcadev_src
+          trigger: true
+      - put: orcadev
+        params:
+          cache: true
+          load_base: centos5
+          build: src/orcadev/centos5
+
+  - name: gpdbdev
+    plan:
+      - aggregate:
+        - get: centos6
+          params:
+            save: true
+        - get: gpdbdev_src
+          trigger: true
+      - put: gpdbdev
+        params:
+          build: gpdbdev_src/gpdbdev/centos6
+          load_base: centos6
+          cache: true
