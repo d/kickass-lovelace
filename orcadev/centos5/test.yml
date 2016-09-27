@@ -1,0 +1,5 @@
+platform: linux
+inputs:
+  - name: src
+run:
+  path: src/orcadev/centos5/test.bash

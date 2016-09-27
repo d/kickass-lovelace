@@ -59,6 +59,9 @@ jobs:
           cache: true
           load_base: centos5
           build: src/orcadev/centos5
+      - task: test
+        image: orcadev
+        file: src/orcadev/centos5/test.yml
 
   - name: gpdbdev
     plan:
