@@ -66,10 +66,14 @@ jobs:
         - get: centos6
           params:
             save: true
-        - get: gpdbdev_src
+        - get: src
+          resource: gpdbdev_src
           trigger: true
       - put: gpdbdev
         params:
-          build: gpdbdev_src/gpdbdev/centos6
+          build: src/gpdbdev/centos6
           load_base: centos6
           cache: true
+      - task: test
+        image: gpdbdev
+        file: src/gpdbdev/centos6/test.yml
