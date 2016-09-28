@@ -1,0 +1,10 @@
+inputs:
+  - name: src
+  - name: gcc_source
+outputs:
+  - name: gcc
+run:
+  path: src/gcc/compile.bash
+
+platform: linux
+image: docker:///yolo/orcadev#centos5
