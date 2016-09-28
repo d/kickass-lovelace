@@ -56,6 +56,8 @@ it_has_executables() {
 		patch
 		bzip2
 		unzip
+		pigz
+		xz
 		wget
 	)
 	for executable in "${EXECUTABLES[@]}"; do
