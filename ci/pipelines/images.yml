@@ -18,11 +18,19 @@ resources:
 
   - name: gcc4_centos5
     type: s3
-    source:
+    __ignored: &bucket_config
       bucket: {{bucket}}
-      versioned_file: gcc/gcc4_centos5.tar.gz
       access_key_id: {{s3_access_key}}
       secret_access_key: {{s3_secret_key}}
+    source:
+      versioned_file: gcc/gcc4_centos5.tar.gz
+      <<: *bucket_config
+
+  - name: gcc4_centos6
+    type: s3
+    source:
+      versioned_file: gcc/gcc4_centos6.tar.gz
+      <<: *bucket_config
 
   - name: orcadev_src
     type: git
@@ -109,6 +117,7 @@ jobs:
   - name: gcc4_centos5
     plan:
       - aggregate:
+        - get: orcadev
         - get: gcc_source
           version:
             version: "4.9.4"
@@ -116,7 +125,25 @@ jobs:
           resource: gcc_src
           trigger: true
       - task: compile
+        image: orcadev
         file: src/gcc/compile.yml
       - put: gcc4_centos5
+        params:
+          file: gcc/gcc.tar.gz
+
+  - name: gcc4_centos6
+    plan:
+      - aggregate:
+        - get: gpdbdev
+        - get: gcc_source
+          version:
+            version: "4.9.4"
+        - get: src
+          resource: gcc_src
+          trigger: true
+      - task: compile
+        image: gpdbdev
+        file: src/gcc/compile.yml
+      - put: gcc4_centos6
         params:
           file: gcc/gcc.tar.gz
