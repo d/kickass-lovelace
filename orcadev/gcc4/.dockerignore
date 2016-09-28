@@ -1,0 +1,7 @@
+*
+!libc.conf
+!ninja
+!gcc4
+!cmake
+!python
+!ccache

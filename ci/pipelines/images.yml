@@ -1,4 +1,19 @@
 resource_types:
+  - name: ccache
+    type: docker-image
+    source:
+      repository: yolo/ccache_resource
+
+  - name: cmake
+    type: docker-image
+    source:
+      repository: yolo/cmake_resource
+
+  - name: python
+    type: docker-image
+    source:
+      repository: yolo/python_resource
+
   - name: gcc_source
     type: docker-image
     source:
@@ -7,6 +22,21 @@ resource_types:
 resources:
   - name: gcc_source
     type: gcc_source
+
+  - name: cmake
+    type: cmake
+
+  - name: ccache
+    type: ccache
+
+  - name: static_python
+    type: python
+
+  - name: ninja
+    type: github-release
+    source:
+      user: ninja-build
+      repository: ninja
 
   - name: gcc_src
     type: git
@@ -48,6 +78,21 @@ resources:
     source:
       repository: yolo/orcadev
       tag: centos5
+      <<: *dockerhub_credentials
+
+  - name: orcadev_gcc4_src
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      paths:
+        - orcadev/gcc4
+      branch: develop
+
+  - name: orcadev_gcc4
+    type: docker-image
+    source:
+      repository: yolo/orcadev
+      tag: gcc4
       <<: *dockerhub_credentials
 
   - name: gpdbdev_src
@@ -147,3 +192,34 @@ jobs:
       - put: gcc4_centos6
         params:
           file: gcc/gcc.tar.gz
+
+  - name: orcadev_gcc4
+    plan:
+      - aggregate:
+        - get: centos5
+          params:
+            save: true
+        - get: cmake
+        - get: ccache
+        - get: ninja
+          version:
+            tag: "v1.7.1"
+        - get: python
+          resource: static_python
+        - get: src
+          resource: orcadev_gcc4_src
+          trigger: true
+        - get: gcc4
+          resource: gcc4_centos5
+          passed:
+            - gcc4_centos5
+      - task: prepare
+        file: src/orcadev/gcc4/prepare.yml
+      - put: orcadev_gcc4
+        params:
+          cache: true
+          load_base: centos5
+          build: prepared
+      - task: test
+        image: orcadev_gcc4
+        file: src/orcadev/gcc4/test.yml
