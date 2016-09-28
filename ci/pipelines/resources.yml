@@ -22,6 +22,20 @@ resources:
         - cmake_resource
       branch: develop
 
+  - name: python_resource
+    type: docker-image
+    source:
+      repository: yolo/python_resource
+      <<: *dockerhub_credentials
+
+  - name: python_resource_src
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      paths:
+        - python_resource
+      branch: develop
+
   - name: ccache_resource
     type: docker-image
     source:
@@ -85,6 +99,21 @@ jobs:
           cache: true
           load_base: centos5
           build: src/cmake_resource
+
+  - name: python_resource
+    plan:
+      - aggregate:
+        - get: centos5
+          params:
+            save: true
+        - get: src
+          resource: python_resource_src
+          trigger: true
+      - put: python_resource
+        params:
+          cache: true
+          load_base: centos5
+          build: src/python_resource
 
   - name: gcc_source_resource
     plan:
