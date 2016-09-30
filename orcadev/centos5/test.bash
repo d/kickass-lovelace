@@ -6,7 +6,7 @@ set -x
 _main() {
 	it_has_gcc
 
-	it_has_libc_objects
+	it_has_working_cc
 
 	it_has_modern_cmake
 
@@ -26,7 +26,7 @@ it_has_gcc() {
 	type -p c++
 }
 
-it_has_libc_objects() {
+it_has_working_cc() {
 	(
 	set -e
 	pushd "$(mktemp -d -t simple_compilation.XXX)"
@@ -35,6 +35,7 @@ it_has_libc_objects() {
 int main() { return 0; }
 HELLO
 	gcc -D_GNU_SOURCE -o hello hello.c
+	./hello
 	)
 }
 

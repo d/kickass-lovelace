@@ -6,7 +6,7 @@ set -x
 _main() {
 	it_has_gcc4
 
-	it_has_libc_objects
+	it_has_working_cc
 
 	it_has_modern_cmake
 
@@ -20,11 +20,14 @@ _main() {
 }
 
 it_has_gcc4() {
-	gcc --version | fgrep --quiet 4.9.4
-	g++ --version | fgrep --quiet 4.9.4
+	local version=4.9.4
+	gcc --version | fgrep --quiet "${version}"
+	g++ --version | fgrep --quiet "${version}"
+	cc --version | fgrep --quiet "${version}"
+	c++ --version | fgrep --quiet "${version}"
 }
 
-it_has_libc_objects() {
+it_has_working_cc() {
 	(
 	set -e
 	pushd "$(mktemp -d -t simple_compilation.XXX)"
@@ -33,6 +36,7 @@ it_has_libc_objects() {
 int main() { return 0; }
 HELLO
 	gcc -D_GNU_SOURCE -o hello hello.c
+	./hello
 	)
 }
 
