@@ -80,6 +80,13 @@ resources:
       tag: centos5
       <<: *dockerhub_credentials
 
+  - name: orcadev_rc
+    type: docker-image
+    source:
+      repository: yolo/orcadev
+      tag: centos5_rc
+      <<: *dockerhub_credentials
+
   - name: orcadev_gcc4_src
     type: git
     source:
@@ -87,6 +94,13 @@ resources:
       paths:
         - orcadev/gcc4
       branch: develop
+
+  - name: orcadev_gcc4_rc
+    type: docker-image
+    source:
+      repository: yolo/orcadev
+      tag: gcc4_rc
+      <<: *dockerhub_credentials
 
   - name: orcadev_gcc4
     type: docker-image
@@ -108,6 +122,13 @@ resources:
     source:
       repository: yolo/gpdbdev
       tag: centos6
+      <<: *dockerhub_credentials
+
+  - name: gpdbdev_rc
+    type: docker-image
+    source:
+      repository: yolo/gpdbdev
+      tag: centos6_rc
       <<: *dockerhub_credentials
 
   - name: centos6
@@ -132,14 +153,19 @@ jobs:
         - get: src
           resource: orcadev_src
           trigger: true
-      - put: orcadev
+      - put: orcadev_rc
         params:
           cache: true
           load_base: centos5
           build: src/orcadev/centos5
+        get_params:
+          save: true
       - task: test
-        image: orcadev
+        image: orcadev_rc
         file: src/orcadev/centos5/test.yml
+      - put: orcadev
+        params:
+          load: orcadev_rc
 
   - name: gpdbdev
     plan:
@@ -150,14 +176,19 @@ jobs:
         - get: src
           resource: gpdbdev_src
           trigger: true
-      - put: gpdbdev
+      - put: gpdbdev_rc
         params:
           build: src/gpdbdev/centos6
           load_base: centos6
           cache: true
+        get_params:
+          save: true
       - task: test
-        image: gpdbdev
+        image: gpdbdev_rc
         file: src/gpdbdev/centos6/test.yml
+      - put: gpdbdev
+        params:
+          load: gpdbdev_rc
 
   - name: gcc4_centos5
     plan:
@@ -215,11 +246,16 @@ jobs:
             - gcc4_centos5
       - task: prepare
         file: src/orcadev/gcc4/prepare.yml
-      - put: orcadev_gcc4
+      - put: orcadev_gcc4_rc
         params:
           cache: true
           load_base: centos5
           build: prepared
+        get_params:
+          save: true
       - task: test
-        image: orcadev_gcc4
+        image: orcadev_gcc4_rc
         file: src/orcadev/gcc4/test.yml
+      - put: orcadev_gcc4
+        params:
+          load: orcadev_gcc4_rc
