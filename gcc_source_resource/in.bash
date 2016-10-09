@@ -14,7 +14,8 @@ _main() {
 
 	# "download_prerequisites" pulls down a bunch of tarballs and extracts them,
 	# but then leaves the tarballs themselves lying around
-	local GCC_VERSION=4.9.4
+	local GCC_VERSION
+	GCC_VERSION=$(jq -r ".version.version")
 
 	curl -fSL "http://ftpmirror.gnu.org/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2" -o gcc.tar.bz2
 	curl -fSL "http://ftpmirror.gnu.org/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.bz2.sig" -o gcc.tar.bz2.sig
