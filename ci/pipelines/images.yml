@@ -56,6 +56,12 @@ resources:
       versioned_file: gcc/gcc4/centos5/gcc.tar.gz
       <<: *bucket_config
 
+  - name: gcc5_centos5
+    type: s3
+    source:
+      versioned_file: gcc/gcc5/centos5/gcc.tar.gz
+      <<: *bucket_config
+
   - name: gcc6_centos5
     type: s3
     source:
@@ -210,6 +216,23 @@ jobs:
         image: orcadev
         file: src/gcc/compile.yml
       - put: gcc4_centos5
+        params:
+          file: gcc/gcc.tar.gz
+
+  - name: gcc5_centos5
+    plan:
+      - aggregate:
+        - get: orcadev
+        - get: gcc_source
+          version:
+            version: "5.4.0"
+        - get: src
+          resource: gcc_src
+          trigger: true
+      - task: compile
+        image: orcadev
+        file: src/gcc/compile.yml
+      - put: gcc5_centos5
         params:
           file: gcc/gcc.tar.gz
 
