@@ -21,6 +21,6 @@ RUN yum install -q -y \
 
 COPY ninja /usr/local/bin/
 COPY cmake python ccache /usr/local/
-ADD gcc4/gcc.tar.gz /usr/local
+ADD gcc4/gcc.tar.xz /usr/local
 RUN /sbin/ldconfig
 RUN ln -sv gcc /usr/local/bin/cc

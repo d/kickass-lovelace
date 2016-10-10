@@ -53,25 +53,25 @@ resources:
       access_key_id: {{s3_access_key}}
       secret_access_key: {{s3_secret_key}}
     source:
-      versioned_file: gcc/gcc4/centos5/gcc.tar.gz
+      versioned_file: gcc/gcc4/centos5/gcc.tar.xz
       <<: *bucket_config
 
   - name: gcc5_centos5
     type: s3
     source:
-      versioned_file: gcc/gcc5/centos5/gcc.tar.gz
+      versioned_file: gcc/gcc5/centos5/gcc.tar.xz
       <<: *bucket_config
 
   - name: gcc6_centos5
     type: s3
     source:
-      versioned_file: gcc/gcc6/centos5/gcc.tar.gz
+      versioned_file: gcc/gcc6/centos5/gcc.tar.xz
       <<: *bucket_config
 
   - name: gcc4_centos6
     type: s3
     source:
-      versioned_file: gcc/gcc4/centos6/gcc.tar.gz
+      versioned_file: gcc/gcc4/centos6/gcc.tar.xz
       <<: *bucket_config
 
   - name: orcadev_src
@@ -217,7 +217,7 @@ jobs:
         file: src/gcc/compile.yml
       - put: gcc4_centos5
         params:
-          file: gcc/gcc.tar.gz
+          file: gcc/gcc.tar.xz
 
   - name: gcc5_centos5
     plan:
@@ -234,7 +234,7 @@ jobs:
         file: src/gcc/compile.yml
       - put: gcc5_centos5
         params:
-          file: gcc/gcc.tar.gz
+          file: gcc/gcc.tar.xz
 
   - name: gcc6_centos5
     plan:
@@ -251,7 +251,7 @@ jobs:
         file: src/gcc/compile.yml
       - put: gcc6_centos5
         params:
-          file: gcc/gcc.tar.gz
+          file: gcc/gcc.tar.xz
 
   - name: gcc4_centos6
     plan:
@@ -268,7 +268,7 @@ jobs:
         file: src/gcc/compile.yml
       - put: gcc4_centos6
         params:
-          file: gcc/gcc.tar.gz
+          file: gcc/gcc.tar.xz
 
   - name: orcadev_gcc4
     plan:
