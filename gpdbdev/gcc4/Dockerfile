@@ -48,7 +48,8 @@ RUN set -ex \
 	&& pip install --no-cache-dir --upgrade pip
 
 COPY ninja /usr/local/bin/
-COPY cmake ccache gcc4 /usr/local/
+COPY cmake ccache /usr/local/
+ADD gcc4/gcc.tar.xz /usr/local/
 RUN ln -sv gcc /usr/local/bin/cc
 
 RUN pip install \

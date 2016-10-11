@@ -149,6 +149,28 @@ resources:
       tag: centos6_rc
       <<: *dockerhub_credentials
 
+  - name: gpdbdev_gcc4_src
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      paths:
+        - gpdbdev/gcc4
+      branch: develop
+
+  - name: gpdbdev_gcc4
+    type: docker-image
+    source:
+      repository: yolo/gpdbdev
+      tag: gcc4
+      <<: *dockerhub_credentials
+
+  - name: gpdbdev_gcc4_rc
+    type: docker-image
+    source:
+      repository: yolo/gpdbdev
+      tag: gcc4_rc
+      <<: *dockerhub_credentials
+
   - name: centos6
     type: docker-image
     source:
@@ -328,3 +350,37 @@ jobs:
       - put: orcadev_gcc4
         params:
           load: orcadev_gcc4_rc
+
+  - name: gpdbdev_gcc4
+    plan:
+      - aggregate:
+        - get: centos6
+          params:
+            save: true
+        - get: cmake
+        - get: ccache
+        - get: ninja
+          version:
+            tag: "v1.7.1"
+        - get: src
+          resource: gpdbdev_gcc4_src
+          trigger: true
+        - get: gcc4
+          resource: gcc4_centos6
+          passed:
+            - gcc4_centos6
+      - task: prepare
+        file: src/gpdbdev/gcc4/prepare.yml
+      - put: gpdbdev_gcc4_rc
+        params:
+          cache: true
+          load_base: centos6
+          build: prepared
+        get_params:
+          save: true
+      - task: test
+        image: gpdbdev_gcc4_rc
+        file: src/gpdbdev/gcc4/test.yml
+      - put: gpdbdev_gcc4
+        params:
+          load: gpdbdev_gcc4_rc
