@@ -8,6 +8,8 @@ _main() {
 
 	it_has_libc_objects
 
+	it_has_working_cxx
+
 	it_has_modern_cmake
 
 	it_has_modern_ccache
@@ -33,6 +35,19 @@ it_has_libc_objects() {
 int main() { return 0; }
 HELLO
 	gcc -D_GNU_SOURCE -o hello hello.c
+	./hello
+	)
+}
+
+it_has_working_cxx() {
+	(
+	pushd "$(mktemp -d -t simple_cxx.XXX)"
+	cat > hello.cc <<HELLO
+#include <iostream>
+int main() { std::cout << 1ul << '\n'; }
+HELLO
+	c++ -O -o hello hello.cc
+	./hello
 	)
 }
 
