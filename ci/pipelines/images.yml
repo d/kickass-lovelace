@@ -74,6 +74,12 @@ resources:
       versioned_file: gcc/gcc4/centos6/gcc.tar.xz
       <<: *bucket_config
 
+  - name: gcc6_centos6
+    type: s3
+    source:
+      versioned_file: gcc/gcc6/centos6/gcc.tar.xz
+      <<: *bucket_config
+
   - name: orcadev_src
     type: git
     source:
@@ -267,6 +273,23 @@ jobs:
         image: gpdbdev
         file: src/gcc/compile.yml
       - put: gcc4_centos6
+        params:
+          file: gcc/gcc.tar.xz
+
+  - name: gcc6_centos6
+    plan:
+      - aggregate:
+        - get: gpdbdev
+        - get: gcc_source
+          version:
+            version: "6.2.0"
+        - get: src
+          resource: gcc_src
+          trigger: true
+      - task: compile
+        image: gpdbdev
+        file: src/gcc/compile.yml
+      - put: gcc6_centos6
         params:
           file: gcc/gcc.tar.xz
 
