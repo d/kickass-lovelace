@@ -187,13 +187,13 @@ resources:
     type: docker-image
     source:
       repository: yolo/bosh
+      <<: *dockerhub_credentials
 
   - name: kickass_lovelace
     type: git
     source:
       uri: https://github.com/d/kickass-lovelace
       branch: develop
-      <<: *dockerhub_credentials
 
 jobs:
   - name: orcadev
