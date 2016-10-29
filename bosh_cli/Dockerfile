@@ -1,2 +1,3 @@
 FROM ruby:2.3
-RUN gem install bosh_cli
+RUN apt-get install -y postgresql-client
+RUN gem install --no-ri --no-rdoc bosh_cli

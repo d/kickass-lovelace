@@ -183,6 +183,17 @@ resources:
       repository: centos
       tag: "5"
 
+  - name: bosh
+    type: docker-image
+    source:
+      repository: yolo/bosh
+
+  - name: kickass_lovelace
+    type: git
+    source:
+      uri: https://github.com/d/kickass-lovelace
+      branch: develop
+
 jobs:
   - name: orcadev
     plan:
@@ -384,3 +395,13 @@ jobs:
       - put: gpdbdev_gcc4
         params:
           load: gpdbdev_gcc4_rc
+
+  - name: bosh
+    plan:
+      - get: src
+        resource: kickass_lovelace
+        trigger: true
+      - put: bosh
+        params:
+          cache: true
+          build: src/bosh_cli
