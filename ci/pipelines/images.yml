@@ -193,6 +193,7 @@ resources:
     source:
       uri: https://github.com/d/kickass-lovelace
       branch: develop
+      <<: *dockerhub_credentials
 
 jobs:
   - name: orcadev
