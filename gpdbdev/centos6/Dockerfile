@@ -52,10 +52,13 @@ RUN yum install -q -y \
 	htop \
 	perl-Env \
 	perl-ExtUtils-Embed \
+	perl-Data-Dumper \
 	libxml2-devel \
 	libxslt-devel \
 	libffi-devel \
-	file
+	file \
+	iproute \
+	net-tools
 
 # gpg: key 18ADD4FF: public key "Benjamin Peterson <benjamin@python.org>" imported
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF
