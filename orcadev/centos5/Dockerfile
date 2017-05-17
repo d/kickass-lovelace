@@ -1,4 +1,7 @@
 FROM centos:5
+RUN rm -v /etc/yum.repos.d/CentOS*.repo /etc/yum.repos.d/libselinux.repo
+ADD CentOS-Vault.repo /etc/yum.repos.d
+
 RUN yum upgrade -q -y \
 	&& yum install -q -y epel-release
 RUN yum install -q -y \
