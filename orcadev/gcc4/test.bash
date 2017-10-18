@@ -24,10 +24,10 @@ _main() {
 
 it_has_gcc4() {
 	local version=4.9.4
-	gcc --version | fgrep --quiet "${version}"
-	g++ --version | fgrep --quiet "${version}"
-	cc --version | fgrep --quiet "${version}"
-	c++ --version | fgrep --quiet "${version}"
+	gcc --version | grep -F --quiet "${version}"
+	g++ --version | grep -F --quiet "${version}"
+	cc --version | grep -F --quiet "${version}"
+	c++ --version | grep -F --quiet "${version}"
 }
 
 it_has_working_cc() {
@@ -56,11 +56,11 @@ HELLO
 }
 
 it_has_modern_cmake() {
-	cmake --version | fgrep --quiet 3.6.1
+	cmake --version | grep -F --quiet 3.6.1
 }
 
 it_has_modern_ccache() {
-	ccache --version | fgrep --quiet 'ccache version 3.3.1'
+	ccache --version | grep -F --quiet 'ccache version 3.3.1'
 }
 
 it_has_ninja_17() {

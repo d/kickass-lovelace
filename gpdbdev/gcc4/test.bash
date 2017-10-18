@@ -20,8 +20,8 @@ _main() {
 }
 
 it_has_gcc4() {
-	gcc --version | fgrep --quiet 4.9.4
-	g++ --version | fgrep --quiet 4.9.4
+	gcc --version | grep -F --quiet 4.9.4
+	g++ --version | grep -F --quiet 4.9.4
 }
 
 it_has_libc_objects() {
@@ -50,11 +50,11 @@ HELLO
 }
 
 it_has_modern_cmake() {
-	cmake --version | fgrep --quiet 3.6.1
+	cmake --version | grep -F --quiet 3.6.1
 }
 
 it_has_modern_ccache() {
-	ccache --version | fgrep --quiet 'ccache version 3.3.1'
+	ccache --version | grep -F --quiet 'ccache version 3.3.1'
 }
 
 it_has_ninja_17() {

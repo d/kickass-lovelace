@@ -55,11 +55,11 @@ HELLO
 }
 
 it_has_modern_cmake() {
-	cmake --version | fgrep --quiet 3.6.1
+	cmake --version | grep -F --quiet 3.6.1
 }
 
 it_has_modern_ccache() {
-	ccache --version | fgrep --quiet 'ccache version 3.3.1'
+	ccache --version | grep -F --quiet 'ccache version 3.3.1'
 }
 
 it_has_ninja_17() {

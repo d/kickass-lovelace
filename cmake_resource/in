@@ -18,7 +18,7 @@ _main() {
 	wget http://cmake.org/files/v${VERSION%.*}/{${INSTALLER},${CHECKSUM}{,.asc}}
 	(
 		gpg --verify ${CHECKSUM}{.asc,}
-		fgrep ${INSTALLER} ${CHECKSUM} | sha256sum --check -
+		grep -F ${INSTALLER} ${CHECKSUM} | sha256sum --check -
 	)
 	sh ./${INSTALLER} --prefix="${destination}" --exclude-subdir
 

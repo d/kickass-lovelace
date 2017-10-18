@@ -52,7 +52,7 @@ HELLO
 }
 
 it_has_modern_cmake() {
-	cmake --version | fgrep --quiet 3.6.1
+	cmake --version | grep -F --quiet 3.6.1
 }
 
 it_has_modern_ccache() {
