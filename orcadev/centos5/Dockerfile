@@ -90,3 +90,4 @@ COPY --from=python /opt/python /
 COPY --from=ccache /opt/ccache /
 COPY --from=pip /opt/pip/get-pip.py /opt
 RUN python2 /opt/get-pip.py
+RUN pip install packaging

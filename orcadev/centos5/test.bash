@@ -20,6 +20,8 @@ _main() {
 	it_has_ninja_17
 
 	it_has_executables
+
+	it_has_pip_package packaging
 }
 
 it_has_gcc() {
@@ -68,6 +70,11 @@ it_has_ninja_17() {
 
 it_has_python27() {
 	[[ "$(python --version 2>&1)" == Python\ 2.7.12 ]]
+}
+
+it_has_pip_package() {
+	local package=$1
+	pip show "${package}"
 }
 
 it_has_executables() {
