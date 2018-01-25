@@ -82,7 +82,7 @@ RUN mkdir /opt/ccache
 RUN /usr/src/ccache/configure
 RUN make -j8 install DESTDIR=/opt/ccache
 
-FROM toolchain
+FROM toolchain AS deploy
 WORKDIR /
 COPY --from=ninja /opt/ninja /usr/local/
 COPY --from=cmake /opt/cmake /usr/local/
@@ -91,3 +91,9 @@ COPY --from=ccache /opt/ccache /
 COPY --from=pip /opt/pip/get-pip.py /opt
 RUN python2 /opt/get-pip.py
 RUN pip install packaging
+
+FROM deploy AS test
+COPY test.bash /
+RUN /test.bash
+
+FROM deploy
