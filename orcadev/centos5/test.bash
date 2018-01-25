@@ -27,7 +27,6 @@ _main() {
 it_has_gcc() {
 	type -p gcc
 	type -p g++
-	type -p cc
 	type -p c++
 }
 
