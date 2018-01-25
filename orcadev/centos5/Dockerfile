@@ -13,7 +13,7 @@ RUN yum install -q -y \
 
 FROM base AS cmake
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 7BFB4EDA
-ENV VERSION=3.6.1
+ENV VERSION=3.6.3
 ENV INSTALLER=cmake-${VERSION}-Linux-x86_64.sh
 ENV CHECKSUM=cmake-${VERSION}-SHA-256.txt
 RUN wget --no-verbose --no-check-certificate --directory-prefix / http://cmake.org/files/v${VERSION%.*}/{${INSTALLER},${CHECKSUM}{,.asc}}
@@ -24,7 +24,7 @@ RUN mkdir /opt/cmake
 RUN sh ./${INSTALLER} --prefix=/opt/cmake --exclude-subdir
 
 FROM base AS ninja
-RUN wget https://github.com/ninja-build/ninja/releases/download/v1.7.1/ninja-linux.zip --output-document /tmp/ninja-linux.zip
+RUN wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip --output-document /tmp/ninja-linux.zip
 RUN mkdir -vp /opt/ninja/bin
 RUN unzip /tmp/ninja-linux.zip -d /opt/ninja/bin
 
@@ -58,14 +58,12 @@ RUN wget 'https://bootstrap.pypa.io/get-pip.py' --output-document /opt/pip/get-p
 FROM toolchain AS python
 # gpg: key 18ADD4FF: public key "Benjamin Peterson <benjamin@python.org>" imported
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF
-ENV PYTHON_VERSION=2.7.12
+ENV PYTHON_VERSION=2.7.14
 RUN curl -fSL "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tgz" -o python.tgz
 RUN curl -fSL "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tgz.asc" -o python.tgz.asc
 RUN gpg --batch --verify python.tgz.asc python.tgz
-RUN rm -r python.tgz.asc
 RUN mkdir -p /usr/src/python
 RUN tar -xC /usr/src/python --strip-components=1 -f python.tgz
-RUN rm python.tgz
 WORKDIR /usr/src/python
 RUN ./configure \
 	--enable-unicode=ucs4

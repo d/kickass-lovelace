@@ -57,7 +57,7 @@ HELLO
 }
 
 it_has_modern_cmake() {
-	cmake --version | grep -F --quiet 3.6.1
+	cmake --version | grep -F --quiet 3.6.3
 }
 
 it_has_modern_ccache() {
@@ -65,11 +65,11 @@ it_has_modern_ccache() {
 }
 
 it_has_ninja_17() {
-	[ "$(ninja --version)" = "1.7.1" ]
+	[ "$(ninja --version)" = "1.8.2" ]
 }
 
 it_has_python27() {
-	[[ "$(python --version 2>&1)" == Python\ 2.7.12 ]]
+	[[ "$(python --version 2>&1)" == Python\ 2.7.14 ]]
 }
 
 it_has_pip_package() {
