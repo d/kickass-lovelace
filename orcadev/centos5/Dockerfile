@@ -11,23 +11,6 @@ RUN yum install -q -y \
 	gpg \
 	unzip
 
-FROM base AS cmake
-RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 7BFB4EDA
-ENV VERSION=3.6.3
-ENV INSTALLER=cmake-${VERSION}-Linux-x86_64.sh
-ENV CHECKSUM=cmake-${VERSION}-SHA-256.txt
-RUN wget --no-verbose --no-check-certificate --directory-prefix / http://cmake.org/files/v${VERSION%.*}/{${INSTALLER},${CHECKSUM}{,.asc}}
-WORKDIR /
-RUN gpg --verify ${CHECKSUM}{.asc,}
-RUN fgrep ${INSTALLER} ${CHECKSUM} | sha256sum --check -
-RUN mkdir /opt/cmake
-RUN sh ./${INSTALLER} --prefix=/opt/cmake --exclude-subdir
-
-FROM base AS ninja
-RUN wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip --output-document /tmp/ninja-linux.zip
-RUN mkdir -vp /opt/ninja/bin
-RUN unzip /tmp/ninja-linux.zip -d /opt/ninja/bin
-
 FROM base AS toolchain
 RUN yum install -q -y \
 	git \
@@ -51,9 +34,29 @@ RUN yum install -q -y \
 
 FROM ubuntu AS pip
 RUN apt-get update -q
-RUN apt-get install -y wget
+RUN apt-get install -y \
+	wget \
+	gnupg \
+	unzip
 RUN mkdir /opt/pip
 RUN wget 'https://bootstrap.pypa.io/get-pip.py' --output-document /opt/pip/get-pip.py
+
+FROM pip AS cmake
+RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 7BFB4EDA
+ENV VERSION=3.6.3
+ENV INSTALLER=cmake-${VERSION}-Linux-x86_64.sh
+ENV CHECKSUM=cmake-${VERSION}-SHA-256.txt
+RUN wget --no-verbose --directory-prefix / https://cmake.org/files/v${VERSION%.*}/${INSTALLER} https://cmake.org/files/v${VERSION%.*}/${CHECKSUM} https://cmake.org/files/v${VERSION%.*}/${CHECKSUM}.asc
+WORKDIR /
+RUN gpg --verify ${CHECKSUM}.asc ${CHECKSUM}
+RUN fgrep ${INSTALLER} ${CHECKSUM} | sha256sum --check -
+RUN mkdir /opt/cmake
+RUN sh ./${INSTALLER} --prefix=/opt/cmake --exclude-subdir
+
+FROM pip AS ninja
+RUN wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip --output-document /tmp/ninja-linux.zip
+RUN mkdir -vp /opt/ninja/bin
+RUN unzip /tmp/ninja-linux.zip -d /opt/ninja/bin
 
 FROM toolchain AS python
 # gpg: key 18ADD4FF: public key "Benjamin Peterson <benjamin@python.org>" imported
