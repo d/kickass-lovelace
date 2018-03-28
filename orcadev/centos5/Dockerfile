@@ -70,7 +70,7 @@ RUN tar -xC /usr/src/python --strip-components=1 -f python.tgz
 WORKDIR /usr/src/python
 RUN ./configure \
 	--enable-unicode=ucs4
-RUN make -j8 install DESTDIR=/opt/python
+RUN make -j$(getconf _NPROCESSORS_ONLN) -l$((2 * $(getconf _NPROCESSORS_ONLN))) install DESTDIR=/opt/python
 
 FROM toolchain AS ccache
 ENV VERSION=3.3.1
@@ -81,7 +81,7 @@ RUN mkdir -p /build/ccache
 WORKDIR /build/ccache
 RUN mkdir /opt/ccache
 RUN /usr/src/ccache/configure
-RUN make -j8 install DESTDIR=/opt/ccache
+RUN make -j$(getconf _NPROCESSORS_ONLN) -l$((2 * $(getconf _NPROCESSORS_ONLN))) install DESTDIR=/opt/ccache
 
 FROM toolchain AS deploy
 WORKDIR /
